@@ -5,3 +5,14 @@ body {
 div {
     color: white;
 }
+
+.blur-load {
+    background-image: url(../images/mtg-card.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.card-pack {
+    padding: 1rem;
+    background-color: white;
+}

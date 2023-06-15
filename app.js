@@ -11,17 +11,29 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const cardList = [];
-const wantedCard = [];
+const cardListUGL = [];
+const cardListUST = [];
+const cardListUND = [];
 
 //refer to cards in sets: Unglued (UGL), Unstable (UST), and Unsanctioned (UND), Unifity?
+//UGL
 mtg.card.all({ set: "UGL" }).on('data', card => {
-    cardList.push(card);
+    cardListUGL.push(card);
+});
+
+//UST
+mtg.card.all({ set: "UST" }).on('data', card => {
+    cardListUST.push(card);
+});
+
+//UND
+mtg.card.all({ set: "UND" }).on('data', card => {
+    cardListUND.push(card);
 });
 
 //set up the home page
 app.get("/", (req, res) => {
-    res.render("home", { cardList: cardList });
+    res.render("home");
 });
 
 //respond to search options
@@ -30,30 +42,39 @@ app.post("/", (req, res) => {
 
 });
 
-//set up the home page
+//Unglued set
 app.get("/unglued", (req, res) => {
-    res.render("unglued", { cardList: cardList });
+    res.render("unSet", { cardList: cardListUGL, setName: "ugl" });
 });
 
-app.post("/unglued", (req, res) => {
-
+//Unstable set
+app.get("/unstable", (req, res) => {
+    res.render("unSet", { cardList: cardListUST, setName: "ust" });
 });
+
+//Unsactionedd set
+app.get("/unsanctioned", (req, res) => {
+    res.render("unSet", { cardList: cardListUND, setName: "und" });
+});
+
 
 //get specific card - check 282
 app.get("/card/:cardName", (req, res) => {
     //url check and converted so we can search for the actual card
-    const cardTitle = req.params.cardName.toLowerCase().split(" ").join("-");
-    const cardSearch = cardTitle.split("-").join(" ")
+    const cardTitle = req.params.cardName;
+    const cardSearch = cardTitle.split("-").join(" ");
 
-    mtg.card.all({ name: cardSearch }).on('data', card => {
-        if (cardTitle === card.name.toLowerCase().toLowerCase().split(" ").join("-")) {
-            console.log("/////////");
-            wantedCard.push(card);
-            res.render("card", { wantedCard: card });
-        }
-    });
-
-    //console.log(wantedCard[0]);
+    //search for card name
+    mtg.card.where({ name: cardSearch })
+        .then(cards => {
+            //filter out the array of cards
+            const card = cards.filter(card => cardSearch === card.name.toLowerCase());
+            if (card.length < 1) {
+                res.render("cardError");
+            } else {
+                res.render("card", { wantedCard: card[0] })
+            }
+        });
 })
 
 app.listen("3000", () => {
