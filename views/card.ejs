@@ -1,8 +1,23 @@
 <%- include("partials/header") -%>
 
-<h1 name="wantedCard"><%= wantedCard.name %></h1>
-<img src=<%= wantedCard.imageUrl %> />
-
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src=<%= wantedCard.imageUrl %> class="d-block mx-lg-auto img-fluid"  loading="lazy" />
+      </div>
+      <div class="col-lg-6">
+        <h2 class="display-5 fw-bold lh-1 mb-3" name="wantedCard"><%= wantedCard.name %></h2>
+        <p class="lead"><%= wantedCard.types %></p>
+        <p class="lead"><%= wantedCard.text %></p>
+        <p class="lead">Artist: <%= wantedCard.artist %></p>
+        <% if (wantedCard.set === 'UGL' || wantedCard.set === 'UST' || wantedCard.set === 'UND' ) { %>
+            <p class="lead">This is an Un-Card!</p>
+        <% }else{ %>
+            <p class="lead">This isn't an Un-Card.</p>
+        <% } %>
+      </div>
+    </div>
+</div>
 
 
 <%- include("partials/footer") -%>
