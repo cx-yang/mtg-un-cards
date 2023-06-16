@@ -9,3 +9,4 @@ npm install
 
 Run:
 node app.js
+open in your broser: localhost:3000/
