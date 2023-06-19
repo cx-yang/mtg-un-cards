@@ -15,7 +15,12 @@ const cardListUGL = [];
 const cardListUST = [];
 const cardListUND = [];
 
+function urlFormat(word) {
+    return word.toLowerCase().split(" ").join("-");
+}
+
 //refer to cards in sets: Unglued (UGL), Unstable (UST), and Unsanctioned (UND), Unifity?
+//store card info on load
 //UGL
 mtg.card.all({ set: "UGL" }).on('data', card => {
     cardListUGL.push(card);
@@ -39,7 +44,7 @@ app.get("/", (req, res) => {
 //Card search redirect
 app.post("/", (req, res) => {
     const cardSearch = req.body.searchCard;
-    res.redirect("/card/" + cardSearch.toLowerCase().split(" ").join("-"));
+    res.redirect("/card/" + urlFormat(cardSearch));
 });
 
 //Unglued set
@@ -50,7 +55,7 @@ app.get("/unglued", (req, res) => {
 //Card search redirect
 app.post("/unglued", (req, res) => {
     const cardSearch = req.body.searchCard;
-    res.redirect("/card/" + cardSearch.toLowerCase().split(" ").join("-"));
+    res.redirect("/card/" + urlFormat(cardSearch));
 });
 
 //Unstable set
@@ -61,7 +66,7 @@ app.get("/unstable", (req, res) => {
 //Card search redirect
 app.post("/unstable", (req, res) => {
     const cardSearch = req.body.searchCard;
-    res.redirect("/card/" + cardSearch.toLowerCase().split(" ").join("-"));
+    res.redirect("/card/" + urlFormat(cardSearch));
 });
 
 //Unsactionedd set
@@ -72,7 +77,7 @@ app.get("/unsanctioned", (req, res) => {
 //Card search redirect
 app.post("/unsanctioned", (req, res) => {
     const cardSearch = req.body.searchCard;
-    res.redirect("/card/" + cardSearch.toLowerCase().split(" ").join("-"));
+    res.redirect("/card/" + urlFormat(cardSearch));
 });
 
 
@@ -97,7 +102,7 @@ app.get("/card/:cardName", (req, res) => {
 
 app.post("/card/:cardName", (req, res) => {
     const cardSearch = req.body.searchCard;
-    res.redirect("/card/" + cardSearch.toLowerCase().split(" ").join("-"));
+    res.redirect("/card/" + urlFormat(cardSearch));
 })
 
 app.listen("3000", () => {
